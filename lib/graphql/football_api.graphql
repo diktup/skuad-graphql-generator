@@ -1,0 +1,857 @@
+query getFixturesWithFilter(
+  $filter: FixtureFilterInput!
+  $pagination: PaginationInput
+) {
+  getFixturesWithFilter(filter: $filter, pagination: $pagination) {
+    count
+    isLast
+    objects {
+      id
+      fixture {
+        id
+        referee
+        timezone
+        date
+        timestamp
+        periods {
+          first
+          second
+        }
+        venue {
+          id
+          name
+          city
+        }
+        status {
+          long
+          short
+          elapsed
+        }
+      }
+      league {
+        id
+        name
+        country
+        logo
+        flag
+        season
+        round
+      }
+      teams {
+        home {
+          id
+          name
+          logo
+          winner
+        }
+        away {
+          id
+          name
+          logo
+          winner
+        }
+      }
+      goals {
+        home
+        away
+      }
+      score {
+        halftime {
+          home
+          away
+        }
+        fulltime {
+          home
+          away
+        }
+        extratime {
+          home
+          away
+        }
+        penalty {
+          home
+          away
+        }
+      }
+    }
+  }
+}
+
+query findOneByCoachId($coachId: Int!) {
+  findOneByCoachId(coachId: $coachId) {
+    id
+    coachId
+    name
+    firstname
+    lastname
+    age
+    birth {
+      date
+      place
+      country
+    }
+    team {
+      id
+      name
+      logo
+    }
+    nationality
+    height
+    weight
+    photo
+    career {
+      team {
+        id
+        name
+        logo
+      }
+      start
+      end
+    }
+  }
+}
+
+query getSidelined($player: Int, $coach: Int) {
+  getSidelined(player: $player, coach: $coach) {
+    id
+    sideLined {
+      type
+      start
+      end
+    }
+  }
+}
+
+query getTrophies($player: Int, $coach: Int) {
+  getTrophies(player: $player, coach: $coach) {
+    id
+    trophies {
+      league
+      country
+      season
+      place
+    }
+  }
+}
+
+query getEventsFromProvider($fixture: Int!) {
+  getEventsFromProvider(fixture: $fixture) {
+    time {
+      elapsed
+      extra
+    }
+    team {
+      id
+      name
+      logo
+    }
+    player {
+      id
+      name
+    }
+    assist {
+      id
+      name
+    }
+    type
+    detail
+    comments
+  }
+}
+query getPredictions($fixture: Int!) {
+  getPredictions(fixture: $fixture) {
+    id
+    predictions {
+      winner {
+        id
+        name
+        comment
+      }
+      win_or_draw
+      under_over
+      goals {
+        home
+        away
+      }
+      advice
+      percent {
+        home
+        draw
+        away
+      }
+    }
+    comparison {
+      form {
+        home
+        away
+      }
+      att {
+        home
+        away
+      }
+      def {
+        home
+        away
+      }
+      poisson_distribution {
+        home
+        away
+      }
+      h2h {
+        home
+        away
+      }
+      goals {
+        home
+        away
+      }
+      total {
+        home
+        away
+      }
+    }
+  }
+}
+query getLineupsFromProvider($fixture: Int!) {
+  getLineupsFromProvider(fixture: $fixture) {
+    team {
+      id
+      name
+      logo
+      colors {
+        player {
+          primary
+          number
+          border
+        }
+        goalkeeper {
+          primary
+          number
+          border
+        }
+      }
+    }
+    formation
+    startXI {
+      player {
+        id
+        name
+        number
+        pos
+        grid
+      }
+    }
+    substitutes {
+      player {
+        id
+        name
+        number
+        pos
+        grid
+      }
+    }
+    coach {
+      id
+      name
+      photo
+    }
+  }
+}
+query getHeadToHead(
+  $season: Int!
+  $league: Int
+  $secondTeam: Int!
+  $firstTeam: Int!
+) {
+  getHeadToHead(
+    season: $season
+    league: $league
+    secondTeam: $secondTeam
+    firstTeam: $firstTeam
+  ) {
+    id
+    fixture {
+      id
+      referee
+      timezone
+      date
+      timestamp
+      periods {
+        first
+        second
+      }
+      venue {
+        id
+        name
+        city
+      }
+      status {
+        long
+        short
+        elapsed
+      }
+    }
+    league {
+      id
+      name
+      country
+      logo
+      flag
+      season
+      round
+    }
+    teams {
+      home {
+        id
+        name
+        logo
+        winner
+      }
+      away {
+        id
+        name
+        logo
+        winner
+      }
+    }
+    goals {
+      home
+      away
+    }
+    score {
+      halftime {
+        home
+        away
+      }
+      fulltime {
+        home
+        away
+      }
+      extratime {
+        home
+        away
+      }
+      penalty {
+        home
+        away
+      }
+    }
+  }
+}
+query getStandings($season: Int!, $team: Int, $league: Int) {
+  getStandings(season: $season, team: $team, league: $league) {
+    id
+    league {
+      id
+      name
+      country
+      logo
+      flag
+      season
+      standings {
+        rank
+        team {
+          id
+          name
+          logo
+        }
+        all {
+          played
+          win
+          lose
+          goals {
+            for
+            against
+          }
+        }
+        points
+        goalsDiff
+        group
+        form
+        status
+      }
+    }
+  }
+}
+query getTopScorers($season: Int!, $league: Int!) {
+  getTopScorers(season: $season, league: $league) {
+    id
+    league
+    season
+    topScorers {
+      id
+      player {
+        id
+        name
+        firstname
+        lastname
+        age
+        birth {
+          date
+          place
+          country
+        }
+        nationality
+        height
+        weight
+        injured
+        photo
+      }
+      statistics {
+        team {
+          id
+          name
+          logo
+        }
+        league {
+          id
+          name
+          country
+          logo
+          flag
+          season
+        }
+        games {
+          appearences
+          lineups
+          minutes
+          number
+          position
+          rating
+          captain
+        }
+        passes {
+          total
+          key
+          accuracy
+        }
+        tackles {
+          total
+          blocks
+          interceptions
+        }
+        duels {
+          total
+          won
+        }
+        dribbles {
+          attempts
+          success
+          past
+        }
+        fouls {
+          drawn
+          committed
+        }
+        cards {
+          yellow
+          yellowred
+          red
+        }
+        penalty {
+          won
+          commited
+          scored
+          missed
+          saved
+        }
+        substitutes {
+          in
+          out
+          bench
+        }
+        shots {
+          total
+          on
+        }
+        goals {
+          total
+          conceded
+          assists
+          saves
+        }
+      }
+    }
+  }
+}
+query getInjuriesFromProvider($fixture: Int!) {
+  getInjuriesFromProvider(fixture: $fixture) {
+    player {
+      id
+      name
+      photo
+      type
+      reason
+    }
+    team {
+      id
+      name
+      logo
+    }
+    league {
+      id
+      season
+      name
+      country
+      logo
+      flag
+    }
+    fixture {
+      id
+      timezone
+      date
+      timestamp
+    }
+  }
+}
+query findOneByLeague($leagueId: Int!) {
+  findOneByLeague(leagueId: $leagueId) {
+    id
+    league {
+      id
+      name
+      logo
+      type
+    }
+    country {
+      id
+      name
+      code
+      flag
+    }
+    seasons {
+      year
+      start
+      end
+      current
+    }
+  }
+}
+query getPlayerById($season: Int!, $id: Int!) {
+  getPlayerById(season: $season, id: $id) {
+    id
+    player {
+      id
+      name
+      firstname
+      lastname
+      age
+      birth {
+        date
+        place
+        country
+      }
+      nationality
+      height
+      weight
+      injured
+      photo
+    }
+    statistics {
+      team {
+        id
+        name
+        logo
+      }
+      league {
+        id
+        name
+        country
+        logo
+        flag
+        season
+      }
+      games {
+        appearences
+        lineups
+        minutes
+        number
+        position
+        rating
+        captain
+      }
+      passes {
+        total
+        key
+        accuracy
+      }
+      tackles {
+        total
+        blocks
+        interceptions
+      }
+      duels {
+        total
+        won
+      }
+      dribbles {
+        attempts
+        success
+        past
+      }
+      fouls {
+        drawn
+        committed
+      }
+      cards {
+        yellow
+        yellowred
+        red
+      }
+      penalty {
+        won
+        commited
+        scored
+        missed
+        saved
+      }
+      substitutes {
+        in
+        out
+        bench
+      }
+      shots {
+        total
+        on
+      }
+      goals {
+        total
+        conceded
+        assists
+        saves
+      }
+    }
+  }
+}
+query getAllByPlayerPlayersStatsFromProvider($player: Int!) {
+  getAllByPlayerPlayersStatsFromProvider(player: $player) {
+    id
+    player {
+      id
+      name
+      firstname
+      lastname
+      age
+      birth {
+        date
+        place
+        country
+      }
+      nationality
+      height
+      weight
+      injured
+      photo
+    }
+    statistics {
+      team {
+        id
+        name
+        logo
+      }
+      league {
+        id
+        name
+        country
+        logo
+        flag
+        season
+      }
+      games {
+        appearences
+        lineups
+        minutes
+        number
+        position
+        rating
+        captain
+      }
+      passes {
+        total
+        key
+        accuracy
+      }
+      tackles {
+        total
+        blocks
+        interceptions
+      }
+      duels {
+        total
+        won
+      }
+      dribbles {
+        attempts
+        success
+        past
+      }
+      fouls {
+        drawn
+        committed
+      }
+      cards {
+        yellow
+        yellowred
+        red
+      }
+      penalty {
+        won
+        commited
+        scored
+        missed
+        saved
+      }
+      substitutes {
+        in
+        out
+        bench
+      }
+      shots {
+        total
+        on
+      }
+      goals {
+        total
+        conceded
+        assists
+        saves
+      }
+    }
+  }
+}
+query getTransfersFromProvider($player: Int, $team: Int) {
+  getTransfersFromProvider(player: $player, team: $team) {
+    id
+    player {
+      id
+      name
+    }
+    transfers {
+      date
+      type
+      teams {
+        in {
+          id
+          name
+          logo
+        }
+        out {
+          id
+          name
+          logo
+        }
+      }
+    }
+    updateAt
+  }
+}
+query getInjuriesWithFilter(
+  $filter: InjuriesFilterInput!
+  $pagination: PaginationInput
+) {
+  getInjuriesWithFilter(filter: $filter, pagination: $pagination) {
+    count
+    isLast
+    objects {
+      player {
+        id
+        name
+        photo
+        type
+        reason
+      }
+      team {
+        id
+        name
+        logo
+      }
+      league {
+        id
+        season
+        name
+        country
+        logo
+        flag
+      }
+      fixture {
+        id
+        timezone
+        date
+        timestamp
+      }
+    }
+  }
+}
+query findOneByTeamId($teamId: Int!) {
+  findOneByTeamId(teamId: $teamId) {
+    id
+    team {
+      id
+      name
+      country
+      founded
+      national
+      logo
+    }
+    venue {
+      id
+      name
+      address
+      city
+      capacity
+      surface
+      image
+    }
+  }
+}
+query getCoachesFromProvider($team: Int!) {
+  getCoachesFromProvider(team: $team) {
+    id
+    coachId
+    name
+    firstname
+    lastname
+    age
+    birth {
+      date
+      place
+      country
+    }
+    team {
+      id
+      name
+      logo
+    }
+    nationality
+    height
+    weight
+    photo
+    career {
+      team {
+        id
+        name
+        logo
+      }
+      start
+      end
+    }
+  }
+}
+query getSquadsFromProvider($team: Int!) {
+  getSquadsFromProvider(team: $team) {
+    id
+    team {
+      id
+      name
+      logo
+    }
+    players {
+      id
+      name
+      age
+      number
+      position
+      photo
+    }
+  }
+}
